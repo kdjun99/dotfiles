@@ -1,0 +1,127 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: dev-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: rlaehdwns99@
+    # ── 쿼리 & 로테이션 로그 설정 ──────────────────────────────
+    command: >
+      postgres
+      -c logging_collector=on
+      -c log_destination=stderr
+      -c log_statement=all
+      -c log_min_duration_statement=500
+      -c log_directory=/var/log/postgresql
+      -c log_filename=postgresql.log
+      -c log_rotation_size=100MB
+      -c log_rotation_age=7d
+      -c log_truncate_on_rotation=on
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - dev
+
+  mysql:
+    image: mysql:8.0
+    container_name: dev-mysql
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      # ── 쿼리/성능 로깅 ─────────────────────────
+      - --general_log=1
+      - --general_log_file=/var/lib/mysql/general.log
+      - --slow_query_log=1
+      - --slow_query_log_file=/var/lib/mysql/slow.log
+      - --long_query_time=0.5
+    environment:
+      MYSQL_ROOT_PASSWORD: rlaehdwns99@
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: rlaehdwns99@
+      MYSQL_DATABASE: devdb
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - dev
+
+  redis:
+    image: redis:7
+    container_name: dev-redis
+    command:
+      [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--requirepass",
+        "rlaehdwns99@",
+        "--slowlog-log-slower-than",
+        "10000",
+        "--slowlog-max-len",
+        "256",
+        "--logfile",
+        "/data/redis.log",
+      ]
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - dev
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    container_name: dev-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=rlaehdwns99@
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - bootstrap.memory_lock=true
+    command: >
+      bash -c "echo -e 'index.search.slowlog.threshold.query.warn: 1s\nindex.search.slowlog.threshold.query.info: 500ms\nindex.indexing.slowlog.threshold.index.warn: 1s\nindex.indexing.slowlog.threshold.index.info: 500ms' >> /usr/share/elasticsearch/config/elasticsearch.yml && /usr/local/bin/docker-entrypoint.sh"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+      - elastic_logs:/usr/share/elasticsearch/logs
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - dev
+
+  # ── 로그 로테이터(주간 기준) ──────────────────────────────────
+  logrotate:
+    image: blacklabelops/logrotate
+    container_name: dev-logrotate
+    environment:
+      LOGS_DIRECTORIES: "/var/lib/mysql /var/log/postgresql /usr/share/elasticsearch/logs /data"
+      LOGROTATE_SIZE: 100M
+      LOGROTATE_INTERVAL: weekly
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - postgres_logs:/var/log/postgresql
+      - elastic_logs:/usr/share/elasticsearch/logs
+      - redis_data:/data
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  postgres_logs:
+  mysql_data:
+  redis_data:
+  elastic_data:
+  elastic_logs:
