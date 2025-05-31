@@ -103,4 +103,40 @@ mkdir -p ~/dev
 # docker-compose dev 디렉토리로 복사
 rsync -av --no-perms ~/dotfiles/docker-compose.yml ~/dev/docker-compose.yml
 
+# install vscode extensions
+ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /opt/homebrew/bin/code
 
+code --install-extension steoates.autoimport
+code --install-extension fractalbrew.backticks
+code --install-extension openai.chatgpt
+code --install-extension Catppuccin.catppuccin-vsc
+code --install-extension Catppuccin.catppuccin-vsc-icons
+code --install-extension mikestead.dotenv
+code --install-extension maxcutlyp.dotenv-autocomplete
+code --install-extension EditorConfig.EditorConfig
+code --install-extension usernamehw.errorlens
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension felipecaputo.git-project-manager
+code --install-extension Hyzeta.vscode-theme-github-light
+code --install-extension thomaspink.theme-github
+code --install-extension GitHub.github-vscode-theme
+code --install-extension eamodio.gitlens
+code --install-extension GraphQL.vscode-graphql-syntax
+code --install-extension wix.vscode-import-cost
+code --install-extension oderwat.indent-rainbow
+code --install-extension xabikos.JavaScriptSnippets
+code --install-extension ms-vscode.vscode-typescript-next
+code --install-extension qufiwefefwoyn.kanagawa
+code --install-extension metaphore.kanagawa-vscode-color-theme
+code --install-extension yzhang.markdown-all-in-one
+code --install-extension DavidAnson.vscode-markdownlint
+code --install-extension PKief.material-icon-theme
+code --install-extension PKief.material-product-icons
+code --install-extension monokai.theme-monokai-pro-vscode
+code --install-extension christian-kohler.npm-intellisense
+code --install-extension christian-kohler.path-intellisense
+code --install-extension esbenp.prettier-vscode
+code --install-extension YoavBls.pretty-ts-errors
+code --install-extension Prisma.prisma
+code --install-extension Gruntfuggly.todo-tree
+code --install-extension pflannery.vscode-versionlens
