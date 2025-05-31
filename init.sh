@@ -95,3 +95,12 @@ rsync -av --no-perms ~/dotfiles/.zshrc ~/.zshrc
 echo "install gem packages\n"
 sudo gem install jekyll
 sudo gem install bundler
+
+# dev 디렉토리 생성
+echo "create dev directory\n"
+mkdir -p ~/dev
+
+# docker-compose dev 디렉토리로 복사
+rsync -av --no-perms ~/dotfiles/docker-compose.yml ~/dev/docker-compose.yml
+
+
