@@ -45,7 +45,11 @@ brew install \
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+# install java
+sdk install java
 
+# install quarkus
+sdk install quarkus
 
 # install essential apps
 echo "install essential apps\n"
