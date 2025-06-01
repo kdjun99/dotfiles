@@ -40,6 +40,7 @@ brew install \
   ruby
   gh
   rsync
+  flyway
 
 # install sdkman
 curl -s "https://get.sdkman.io" | bash
@@ -47,9 +48,14 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # install java
 sdk install java
+code --install-extension vscjava.vscode-java-pack
 
 # install quarkus
 sdk install quarkus
+
+# install gradle
+sdk install gradle
+
 
 # install essential apps
 echo "install essential apps\n"
@@ -149,3 +155,6 @@ code --install-extension YoavBls.pretty-ts-errors
 code --install-extension Prisma.prisma
 code --install-extension Gruntfuggly.todo-tree
 code --install-extension pflannery.vscode-versionlens
+
+code --install-extension vscjava.vscode-java-pack
+code --install-extension SonarSource.sonarlint-vscode
