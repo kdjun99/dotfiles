@@ -41,6 +41,11 @@ brew install \
   gh
   rsync
 
+# install sdkman
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+
 
 # install essential apps
 echo "install essential apps\n"
