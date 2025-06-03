@@ -75,6 +75,7 @@ brew install --cask \
   karabiner-elements
   adguard
   adguard-vpn
+  zen
 
 
 # configure git ssh
